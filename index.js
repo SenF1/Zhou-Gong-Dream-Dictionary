@@ -56,6 +56,24 @@ app.get('/dreams', (req, res) => {
     });
 });
 
+app.get('/dream/:id', (req, res) => {
+  const id = req.params.id;
+  let sql = `SELECT * FROM dreams WHERE id = ?;`;
+
+  db.get(sql, id, (err, row) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Error fetching dream from the database.');
+    } else {
+      if (row) {
+        res.status(200).json(row);
+      } else {
+        res.status(404).send('Dream not found with provided ID.');
+      }
+    }
+  });
+});
+
 app.post('/dream', (req, res) => {
   let newName = req.body.name;
   let newDescription = req.body.description;
@@ -82,6 +100,51 @@ app.post('/dream', (req, res) => {
     }
   });
   
+});
+
+app.put('/dream/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedName = req.body.name;
+  const updatedDescription = req.body.description;
+  const updatedLocation = req.body.location;
+
+  let sql = `
+    UPDATE dreams 
+    SET name = ?, description = ?, location = ? 
+    WHERE id = ?
+  `;
+  
+  db.run(sql, [updatedName, updatedDescription, updatedLocation, id], function (err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Error updating dream in the database.');
+    } else {
+      if (this.changes === 0) {
+        res.status(404).send('Dream not found with provided ID.');
+      } else {
+        res.send('PUT:  success!');
+      }
+    }
+  });
+});
+
+app.delete('/dream/:id', (req, res) => {
+  const id = req.params.id;
+
+  let sql = 'DELETE FROM dreams WHERE id = ?';
+
+  db.run(sql, id, function (err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Error deleting dream from the database.');
+    } else {
+      if (this.changes === 0) {
+        res.status(404).send('Dream not found with provided ID.');
+      } else {
+        res.send('DELETE:  success!');
+      }
+    }
+  });
 });
 
 app.listen(port, () => {
