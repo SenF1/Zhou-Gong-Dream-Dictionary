@@ -6,28 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=chrome">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Zhou Gong's Dream Dictionary Interpretation</title>
+    <title>Zhou Gong's Dream Dictionary</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="dreamInterpreter.js"></script>
+    <script type="text/javascript" src="toggle.js"></script>
 
     <!-- Link to bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <h1>Zhou Gong's Dream Dictionary Interpretation</h1>
-    <form method="POST">
-        <label for="dreamInput">Describe your dream:</label>
-        <br>
-        
-        <textarea id="dreamInput" name="dreamDescription" rows="4" cols="50" required></textarea>
-        
-        <br>
-        <button type="submit">Interpret My Dream</button>
+    <div id="wrapper"></div>
 
-        <div id="dreamInterpretationResponse"></div>
-    </form>
+    <header>
+        <h1 style="font-size: 5em;">周公解梦</h1>
+        <h1>Zhou Gong's Dream Dictionary</h1>
+        <p>Your guide to understanding your dreams</p>
+    </header>
+
+    <div class="container">
+        <p>
+            The interpretation is based on an ancient Chinese book that is renowned for its interpretations of dreams...
+            <span id="moreText" style="display:none;">
+                Zhou Gong's Book of Auspicious and Inauspicious Dreams is named after Duke of Zhou (Zhou Gong), a prominent figure in Chinese history who lived during the Zhou Dynasty (1046-256 BCE). Duke of Zhou, also known as Zhou Gong, is revered in Chinese culture as a model of wisdom and moral rectitude. His association with this dream dictionary, however, is more symbolic than factual. <br><br>
+                The history of the text is somewhat shrouded in mystery. While it is attributed to the Duke of Zhou, it is widely acknowledged that the text was compiled long after his time. The dream dictionary is part of a long tradition of dream interpretation in Chinese culture, which has always placed significant importance on dreams as omens, messages from the divine, or reflections of the inner state of the mind.<br><br>
+                The dictionary categorizes dreams into various themes and provides interpretations based on traditional Chinese beliefs, culture, and Taoist and Confucian principles. For example, it may interpret certain animals, objects, or scenarios appearing in dreams as indicators of forthcoming good fortune, health issues, or changes in personal relationships. <br><br><br>
+                Over the centuries, Zhougong's Dream Dictionary has been revised and expanded by various scholars. It has become a part of popular Chinese folklore and is often referenced in Chinese literature and daily life. The interpretations in the dictionary reflect a blend of ancient Chinese philosophy, folklore, and cultural beliefs about the significance of symbols and events in dreams.<br><br>
+                In modern times, while the scientific understanding of dreams has evolved, Zhougong's Dream Dictionary remains a cultural artifact and is still used by some for traditional dream interpretation. Its lasting popularity is a testament to the enduring interest in and mystery of the world of dreams. The dictionary provides not just a historical perspective on Chinese thought regarding dreams, but also offers a unique insight into the cultural and philosophical underpinnings of ancient Chinese society.<br><br>
+            </span>
+            <span id="readMoreLink" style="text-decoration: underline; color: rgba(0, 0, 255, 0.483); cursor: pointer;" onclick="toggleText()">Read More</span>
+        </p>
+        
+        <!-- <img src="images/zhou-gong.png" alt="Zhou Gong" style="width: 300px; height: auto;"> -->
+
+        <section id="dreamInterpretation">
+            <form method="POST">
+                <br>
+                <textarea id="dreamInput" class="cloud-textarea" name="dreamDescription" placeholder="Describe your dream in detail to uncover its meaning..." required></textarea>
+                <br><br>
+                <button id="submitButton" type="submit" class="button">Interpret My Dream</button>
+            </form>
+            
+            <br>
+            <div id="loadingSpinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>              
+            <br>
+
+            <div id="dreamInterpretationResponse" class="cloud-textarea-output"></div>
+        </section>
+
+        <br><br>
+
+        <section id="shareDream">
+            <h2>Share Your Dream</h2>
+            <p>Share your dream with others and potentially find a match.</p>
+            <button id="shareButton">Share Your Dream</button>
+        </section>
+
+    </div>
+
+
+    <footer>
+        <p>&copy; 2023 Zhou Gong's Dream Dictionary</p>
+        <p>This project is a part of my full-stack application at Carnegie Mellon University.</p>
+    </footer>    
 </body>
 
 </html>

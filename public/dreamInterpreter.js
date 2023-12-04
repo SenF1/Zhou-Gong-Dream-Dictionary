@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Hide the response div initially
+        document.getElementById('dreamInterpretationResponse').style.display = 'none';
+        showLoadingSpinner()
+        
+        // AJAX call
         const dreamDescription = document.getElementById('dreamInput').value;
 
         fetch('/interpret-dream', {
@@ -12,8 +18,21 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.text())
         .then(data => {
-            document.getElementById('dreamInterpretationResponse').innerText = data;
+            hideLoadingSpinner();
+            const responseDiv = document.getElementById('dreamInterpretationResponse');
+            responseDiv.innerHTML = data; 
+            responseDiv.style.display = 'block'; 
         })
         .catch(error => console.error('Error:', error));
     });
 });
+
+function showLoadingSpinner() {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
+}
+
+function hideLoadingSpinner() {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'none';
+}
