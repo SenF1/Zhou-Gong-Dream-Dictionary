@@ -94,6 +94,10 @@ p {
     max-height: 300px;
 }
 
+#shareDream {
+    display: none;
+}
+
 .button:hover {
     background-color: #9B55D3; 
 }
