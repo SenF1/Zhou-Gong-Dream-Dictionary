@@ -52,9 +52,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 location: locationInputText,
             }),
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('Dream shared successfully');
+        .then(response => response.json()) // Parse the response as JSON
+        .then(data => {
+            if (data.success) {
+                const formattedTimestamp = formatTimestamp(data.timestamp);
+                const newDream = {
+                    name: nameInputText,
+                    description: dreamInputText,
+                    timestamp: formattedTimestamp, // Now this data comes from the server
+                    location: locationInputText
+                };
+                addDreamAsCard(newDream);
+
+                // Clear inputs
                 document.getElementById('dreamInput').value = '';
                 document.getElementById('nameInput').value = '';
                 document.getElementById('locationInput').value = '';
@@ -67,6 +77,20 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Network error:', error);
         });
     });
+
+    fetch('/dreams')
+        .then(response => response.json())
+        .then(dreams => {
+            const section = document.getElementById('allDreams');
+            section.innerHTML = '';
+            dreams.forEach(dream => {
+                addDreamAsCard(dream);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching dreams:', error);
+            section.innerHTML = '<p>Error loading dreams.</p>';
+        });
 });
 
 function showLoadingSpinner() {
@@ -77,4 +101,44 @@ function showLoadingSpinner() {
 function hideLoadingSpinner() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     loadingSpinner.style.display = 'none';
+}
+
+function addDreamAsCard(dream) {
+    const allDreamsSection = document.getElementById('allDreams');
+
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '18rem';
+
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = dream.name; 
+
+    const subtitle = document.createElement('h6');
+    subtitle.classList.add('card-subtitle', 'mb-2', 'text-body-secondary');
+    subtitle.textContent = formatTimestamp(dream.timestamp); 
+
+    const description = document.createElement('h10');
+    description.classList.add('card-text');
+    description.textContent = dream.description;
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(subtitle);
+    cardBody.appendChild(description);
+
+    card.appendChild(cardBody);
+    allDreamsSection.appendChild(card);
+}
+
+function formatTimestamp(isoTimestamp) {
+    const date = new Date(isoTimestamp);
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add 1 because months are 0-indexed.
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }

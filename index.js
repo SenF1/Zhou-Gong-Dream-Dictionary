@@ -54,7 +54,6 @@ app.get('/dreams', (req, res) => {
   db.all(sql, [], (err, rows) => {
       res.send(rows);
     });
-
 });
 
 app.post('/dream', (req, res) => {
@@ -72,7 +71,14 @@ app.post('/dream', (req, res) => {
       console.log(err);
       res.status(500).send('Error inserting dream into the database.');
     } else {
-      res.status(200).send('Dream inserted successfully with ID: ' + this.lastID);
+      const newId = this.lastID;
+      const timestamp = new Date().toISOString();
+      res.status(200).json({
+        success: true,
+        message: 'Dream inserted successfully',
+        id: newId,
+        timestamp: timestamp
+      });
     }
   });
   
